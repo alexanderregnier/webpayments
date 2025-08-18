@@ -9,7 +9,7 @@ During checkout online, one way to support interaction with a digital wallet for
 A number of Web technologies are being used (or should soon be available) to support digital wallet interactions where the user stays “within” the merchant context. All of them involve modal windows/overlays in some capacity:
 
 * JavaScript and a popup window (e.g., PayPal express). Note that on mobile, the popup window appears in a new tab, so the user experience is very similar to a redirect.
-* [Payment Request](https://github.com/w3c/payment-request/ in conjunction with a payment app (native or Web-based payment handler)
+* [Payment Request](https://github.com/w3c/payment-request/) in conjunction with a payment app (native or Web-based payment handler)
 * In development: Digital credentials API (see, for example,  [Chrome origin trial info](https://developer.chrome.com/blog/digital-credentials-api-origin-trial))
 * In development: [Facilitated Payment Link Type in HTML](https://wicg.github.io/paymentlink/)
 
