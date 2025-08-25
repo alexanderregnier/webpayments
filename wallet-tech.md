@@ -4,13 +4,13 @@ Status: Draft by Ian Jacobs
 
 Digital wallets for payments are widely used around the world. Juniper Research [reports](https://www.juniperresearch.com/press/over-two-thirds-of-the-global-population-to-own-a-digital-wallet-by-2029/) that by 2029, two-thirds of the global population will have a digital wallet. 
 
-During checkout online, one way to support interaction with a digital wallet for payment is to redirect the user away from the merchant Web site, to another Web site or native app. This is generally considered a poor user experience, and merchants generally prefer that users remain at their site rather than leave it to make a payment.
+During checkout online, one way to support interaction with a digital wallet for payment is to redirect the user away from the merchant Web site, to another Web site or native app or even the operating system. This is generally considered a poor user experience, and merchants generally prefer that users remain at their site rather than leave it to make a payment.
 
 A number of Web technologies are being used (or should soon be available) to support digital wallet interactions where the user stays “within” the merchant context. All of them involve modal windows/overlays in some capacity:
 
-* JavaScript and a popup window (e.g., PayPal express). Note that on mobile, the popup window appears in a new tab, so the user experience is very similar to a redirect.
+* JavaScript and a popup window (e.g., PayPal express, some implementations of EMV&reg; SRC). Note that on mobile, the popup window appears in a new tab, so the user experience is very similar to a redirect.
 * [Payment Request](https://github.com/w3c/payment-request/) in conjunction with a payment app (native or Web-based payment handler)
-* In development: Digital credentials API (see, for example,  [Chrome origin trial info](https://developer.chrome.com/blog/digital-credentials-api-origin-trial))
+* In development: [Digital credentials API](https://www.w3.org/TR/digital-credentials/) (see, for example,  [Chrome origin trial info](https://developer.chrome.com/blog/digital-credentials-api-origin-trial))
 * In development: [Facilitated Payment Link Type in HTML](https://wicg.github.io/paymentlink/)
 
 Below we compare some characteristics of these approaches.
@@ -19,11 +19,11 @@ Below we compare some characteristics of these approaches.
 
 ### Does data need to flow from the wallet to the merchant via the browser?
 
-Some payment flows typically involve the exchange of data between the user and the merchant, via the browser. Examples include providing credit card, debit card, or bank account information to the merchant (or their payment service provider), or a payment wallet that is able to provide information beyond the payment instrument itself (e.g., a user’s chosen shipping address).
+Some payment flows typically involve the exchange of data between the user and the merchant, via the browser. Examples include providing credit card, debit card, or bank account information to the merchant (or their payment service provider), or a payment wallet that is able to provide information beyond the payment instrument itself (e.g., a user’s chosen shipping address). In other cases, full payment processing is done in this page, or information is returned which the merchant can submit on an Payment Authorization channel.
 
-Other payment flows typically involve “backend” integration between a payment system and the merchant. In these cases, the payment flow typically involves the user interacting with a bank or other payment service provider to initiate a payment, which is then carried out without needing to return information via the browser to the merchant.
+Other payment flows typically involve “backend” integration between a payment system and the merchant. In these cases, the payment flow typically involves the user interacting with a bank or other payment service provider to initiate a payment, which is then carried out without needing to return information via the browser to the merchant. Merchants typically receive payment status information via the backend.
 
-There is some correlation between these user flows and what are called “pull payments” (initiated by the merchant with user-provided information) and “push payments” (initiated by the user with merchant-provided information). We make the connection here because it may be possible to optimize the user experience (generally) for the two approaches to payments using different API designs.
+There is some correlation between these two user flows and what are called “pull payments” (initiated by the merchant with user-provided information) and “push payments” (initiated by the user with merchant-provided information). We make the connection here because it may be possible to optimize the user experience (generally) for the two approaches to payments using different API designs.
 
 ### How does the browser facilitate handing off the flow to the user’s wallet?
 
@@ -59,13 +59,14 @@ Several Web APIs handle this situation by presenting options to users in “brow
 
 ### Payment Request API
 
-* Particularly suited for pull payments, though it can also be used with push payments
-* Works with both Web apps (via Payment Handler) and native payment apps (when supported by the mobile OS)
+* Particularly suited for scenarios where the merchant site wishes to pass custom data to the payment app and receive a response (via the browser) from the payment app.
+* Can work with both Web apps (via Payment Handler) and native payment apps (when supported by browser and mobile OS)
 * Requires merchants to integrate with the Payment Request API via imperative JavaScript calls, handling logic, state, returned JS promises, etc.
 
 ### Facilitated payment link
 
-* Particularly suited for push payments, and does not support data flow through the browser back to the merchant.
+* Does not support data flow through the browser back to the merchant. 
+* Particularly well-suited for push payments. 
 * This can simplify life for developers, who can simply declare in the head of the HTML document which wallets the merchant supports.
 * The browser offers relevant wallets to the user, possibly using both context of the site and the user’s available/linked wallet. The exact UX may differ on desktop and mobile. This approach has several benefits:
    * The user does not have to scan a QR code from a page displayed in a mobile browser.
